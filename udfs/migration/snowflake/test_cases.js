@@ -11,8 +11,37 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
 const {generate_udf_test, generate_udaf_test} = unit_test_utils;
+
+generate_udf_test("bitmap_bit_position", [
+    {
+        inputs: [`CAST(32768 AS INT64)`],
+        expected_output: `CAST(32767 AS INT64)`
+    },
+    {
+        inputs: [`CAST(32769 AS INT64)`],
+        expected_output: `CAST(0 AS INT64)`
+    },
+    {
+        inputs: [`CAST(1 AS INT64)`],
+        expected_output: `CAST(0 AS INT64)`
+    }
+]);
+
+generate_udf_test("bitmap_bucket_number", [
+    {
+        inputs: [`CAST(32768 AS INT64)`],
+        expected_output: `CAST(1 AS INT64)`
+    },
+    {
+        inputs: [`CAST(1 AS INT64)`],
+        expected_output: `CAST(1 AS INT64)`
+    },
+    {
+        inputs: [`CAST(32769 AS INT64)`],
+        expected_output: `CAST(2 AS INT64)`
+    }
+]);
 
 generate_udf_test("factorial", [
     {
